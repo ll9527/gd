@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+    "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<!-- 编码设置 -->
+	<constant name="struts.i18n.encoding" value="UTF-8" />
+	
+	<package name="default" extends="struts-default" namespace="/">
+    <!-- 形如list_Customer -->
+    <action name="user_*" class="userAction" method="{1}">
+        <!-- 转发到客户列表视图 -->
+        <result name="haha">/WEB-INF/jsp/haha.jsp</result>
+    </action>
+    <action name="role_*" class="roleAction" method="{1}">
+        <!-- 转发到客户列表视图 -->
+        <result type="redirect" name="tolist">role_findAll</result>
+        <result name="list">/WEB-INF/jsp/role/list.jsp</result>
+        <result name="addUI">/WEB-INF/jsp/role/addUI.jsp</result>
+    </action>
+</package>
+</struts>
