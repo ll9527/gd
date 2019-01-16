@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xsi:schemaLocation="http://www.springframework.org/schema/aop 
+        http://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/beans 
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/tx 
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/context 
+        http://www.springframework.org/schema/context/spring-context.xsd">
+	<!-- 开启自动扫描 -->
+	<context:component-scan base-package="cn.pc.oa"/>
+	<!-- 开启注解事务 -->
+	<bean id="transactionManager" class=" org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+	<tx:annotation-driven transaction-manager="transactionManager"/>
+	
+	<context:property-placeholder location="classpath:db.properties"/>
+	
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+	    <property name="driverClass" value="${jdbc.driverClass}"/>
+	    <property name="jdbcUrl" value="${jdbc.url}"/>
+	    <property name="user" value="${jdbc.user}"/>
+	    <property name="password" value="${jdbc.password}"/>
+	</bean>
+	
+	<!-- 配置Hibernate的SessionFactory,无hibernate配置文件 -->
+	<bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+	    <!-- 配置数据源 -->
+	    <property name="dataSource" ref="dataSource"/>
+	    <!-- 配置hibernate属性-->
+	    <property name="hibernateProperties">
+	        <props>
+	            <!-- 数据库的方言 -->
+	            <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+	            <!-- 是否显示SQL语句 -->
+	            <prop key="hibernate.show_sql">true</prop>
+	            <!-- 是否格式化显示SQL语句 -->
+	            <prop key="hibernate.format_sql">true</prop>
+	            <!-- 采用何种策略来创建表结构： -->
+	            <prop key="hibernate.hbm2ddl.auto">update</prop>
+	        </props>
+	    </property>
+	    <!-- 配置映射文件 -->
+	    <property name="mappingLocations" value="classpath:cn/pc/oa/pojo/*.hbm.xml"/>
+	</bean>
+</beans>
